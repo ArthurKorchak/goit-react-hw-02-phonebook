@@ -16,14 +16,11 @@ class App extends Component {
     filter: '',
   };
 
-  formSubmit = (event, name, number) => {
-    event.preventDefault();
+  addContact = (name, number) => {
     if (this.state.contacts.reduce((acc, item) => [...acc, item.name], []).includes(name)) {
       alert(`${name} is already in contacts`);
     } else {
       this.setState(prevState => {
-        event.target.reset();
-        console.log(event.target);
         return {contacts: [...prevState.contacts, { id: nanoid(), name: name, number: number }]};
       });
     };
@@ -44,7 +41,7 @@ class App extends Component {
     return (
       <div className={s.container}>
         <h1>Phonebook</h1>
-        <InputForm formSubmit={this.formSubmit} />
+        <InputForm addContact={this.addContact} />
         <h2>Contacts</h2>
         <Filter filter={this.state.filter} filterOperator={this.filterOperator}/>
         <ContactsList currentContacts={currentContacts} deleteContact={this.deleteContact} />

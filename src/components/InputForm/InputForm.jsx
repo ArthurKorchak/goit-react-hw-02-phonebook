@@ -18,9 +18,15 @@ export class InputForm extends Component {
         };
     };
 
+    formSubmit = (event) => {
+        event.preventDefault();
+        this.props.addContact(this.state.name, this.state.number);
+        this.setState({ name: '', number: '' });
+    };
+
     render() {
         return (
-            <form className={s.form} onSubmit={event => this.props.formSubmit(event, this.state.name, this.state.number)}>
+            <form className={s.form} onSubmit={this.formSubmit}>
                 <label className={s.label}>
                     Name
                     <input
@@ -42,7 +48,7 @@ export class InputForm extends Component {
                         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                         required
-                        value={this.state.phone}
+                        value={this.state.number}
                         onChange={this.inputOperator}
                     />
                 </label>
@@ -53,5 +59,5 @@ export class InputForm extends Component {
 };
 
 InputForm.propTypes = {
-    formSubmit: PropTypes.func.isRequired,
+    addContact: PropTypes.func.isRequired,
 };
