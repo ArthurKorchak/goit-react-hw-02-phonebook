@@ -6,9 +6,11 @@ export class Contact extends Component {
     render() {
         return (
             this.props.currentContacts.map(item => (
-                <li key={item.id} className={s.contact}>
-                    <p>{item.name}: <span>{item.number}</span></p>
-                    <button name={item.id} onClick={this.props.deleteContact}>Delete</button>
+                <li key={item.id}>
+                    <div className={s.contact}>
+                        <p>{item.name}: <span>{item.number}</span></p>
+                        <button type='button' name={item.id} onClick={this.props.deleteContact}>Delete</button>
+                    </div>
                 </li>
             ))
         );
