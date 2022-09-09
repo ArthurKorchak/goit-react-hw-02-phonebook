@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid'
 import { InputForm } from './InputForm/InputForm';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
+import s from './App.module.css';
 
 class App extends Component {
   state = {
@@ -17,26 +18,36 @@ class App extends Component {
 
   formSubmit = (event, name, number) => {
     event.preventDefault();
-    event.target.reset();
-    console.log(event.target);
-    this.setState(prevState => {
-      return {contacts: [...prevState.contacts, { id: nanoid(), name: name, number: number }]};
-    });
+    if (this.state.contacts.reduce((acc, item) => [...acc, item.name], []).includes(name)) {
+      alert(`${name} is already in contacts`);
+    } else {
+      this.setState(prevState => {
+        event.target.reset();
+        console.log(event.target);
+        return {contacts: [...prevState.contacts, { id: nanoid(), name: name, number: number }]};
+      });
+    };
   };
 
   filterOperator = (event) => {
     this.setState({filter: event.target.value.toLowerCase()});
   };
 
+  deleteContact = (event) => {
+    this.setState(prevState => {
+        return {contacts: prevState.contacts.filter(item => item.id !== event.target.name)};
+      });
+  };
+
   render() {
     const currentContacts = this.state.contacts.filter(item => item.name.toLowerCase().includes(this.state.filter))
     return (
-      <div>
+      <div className={s.container}>
         <h1>Phonebook</h1>
         <InputForm formSubmit={this.formSubmit} />
         <h2>Contacts</h2>
-        <Filter filer={this.state.filter} filterOperator={this.filterOperator}/>
-        <ContactsList currentContacts={currentContacts} />
+        <Filter filter={this.state.filter} filterOperator={this.filterOperator}/>
+        <ContactsList currentContacts={currentContacts} deleteContact={this.deleteContact} />
       </div>
     );
   };
